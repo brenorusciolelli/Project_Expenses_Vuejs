@@ -24,7 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/variables';
 
 .base-spinner {
   top: 0;
@@ -38,7 +37,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $dark-medium;
-  color: $featured;
+  background-color: var(--dark-medium);
+  color: var(--featured);
 }
 </style>

@@ -8,3 +8,15 @@ $light: #fff;
 
 $featured: #ff9900;
 $featured-dark: #d68100;
+
+:root {
+--dark: #{$dark};
+--darker: #{$darker};
+--dark-medium: #{$dark-medium};
+--dark-low: #{$dark-low};
+--light-medium: #{$light-medium};
+--ligther: #{$ligther};
+--light: #{$light};
+$featured: #{$featured};
+$featured-dark: #{$featured-dark};
+}

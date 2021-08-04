@@ -12,6 +12,9 @@ export default {
   name: 'App',
   components: {
     BaseSpinner
+  },
+  mounted () {
+    console.log(this.$firebase)
   }
 }
 </script>

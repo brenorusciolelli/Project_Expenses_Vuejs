@@ -53,7 +53,15 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" @click="closeModal()">Fechar</button>
-        <button class="btn btn-primary">Incluir novo gasto</button>
+        <button class="btn btn-primary" :disabled="loading">
+          <template v-if="loading">
+            <i class="fa fa-spin fa-spinner"></i>
+            incluindo...
+          </template>
+          <template v-else>
+            Incluir novo gasto
+          </template>
+          </button>
       </div>
     </div>
   </div>
@@ -100,6 +108,7 @@ export default {
       this.loading = true
 
       try {
+        this.$root.$emit('Spinner::hide')
         const ref = this.$firebase.database().ref(window.uid)
         const id = ref.push().key
         if (this.form.receipt) {
@@ -117,17 +126,30 @@ export default {
           createdAt: new Date().getTime()
         }
         ref.child(id).set(payload, err => {
-          this.$root.$emit('Spinner::hide')
           if (err) {
-            console.error(err)
+            this.$root.$emit('Notification::show', {
+              type: 'danger',
+              message: 'Não foi possível inserir o gasto, tente novamente!'
+            })
+            this.loading = false
           } else {
+            this.$root.$emit('Notification::show', {
+              type: 'success',
+              message: 'Inserido com sucesso!'
+            })
             this.closeModal()
+            this.loading = false
           }
         })
       } catch (e) {
-        console.error(e)
+        this.$root.$emit('Notification::show', {
+          type: 'danger',
+          message: 'Não foi possível inserir o gasto, tente novamente!'
+        })
+        this.loading = false
       } finally {
-        this.$root.$emit('Spinner::show')
+        this.$root.$emit('Spinner::hide')
+        this.loading = false
       }
     },
     closeModal () {

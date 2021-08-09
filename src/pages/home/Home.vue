@@ -3,24 +3,24 @@
     <div class="row">
       <div class="col-6 home-box">
         <small>Você gastou</small>
-        <div class="money">R$ 900,00</div>
+        <div class="money" v-money-format="totals.totalSpent"/>
         <small>
           em 29 compras.
         </small>
       </div>
       <div class="col-6 home-box">
         <small>A média de gastos é de</small>
-        <div class="money">R$ 91.90</div>
+        <div class="money" v-money-format="totals.average"/>
       </div>
       <div class="col-6 home-box">
         <small>A maior gasto foi de</small>
-        <div class="money">R$ 102.29</div>
-        <small>No dia 03/08/2021</small>
+        <div class="money" v-money-format="totals.biggest.value"/>
+        <small v-date-format="totals.biggest.createdAt"/>
       </div>
       <div class="col-6 home-box">
         <small>A menor gasto foi de</small>
-        <div class="money">R$ 12.99</div>
-        <small>No dia 07/08/2021</small>
+        <div class="money" v-money-format="totals.lowest.value"/>
+        <small v-date-format="totals.lowest.createdAt"/>
       </div>
     </div>
   </div>
@@ -35,6 +35,28 @@ export default {
   }),
   created () {
     this.getData()
+  },
+  computed: {
+    totals () {
+      const { expenses: exp } = this
+      const values = {
+        totalSpent: 0,
+        average: 0,
+        biggest: {},
+        lowest: {}
+      }
+
+      if (exp.length) {
+        values.totalSpent = exp.map(e => +e.value)
+          .reduce((acc, cur) => acc + cur, 0)
+
+        values.average = values.totalSpent / exp.length
+
+        values.biggest = exp.sort((a, b) => b.value - +a.value)[0]
+        values.lowest = exp.sort((a, b) => a.value - +b.value)[0]
+      }
+      return values
+    }
   },
   methods: {
     getData () {

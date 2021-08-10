@@ -59,5 +59,8 @@ export default {
     margin-top: 10px;
     text-align: center;
   }
+  @media only screen and (max-devide-width: 900px) {
+   width: 100%;
+  }
 }
 </style>
